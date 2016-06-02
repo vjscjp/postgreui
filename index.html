@@ -33,6 +33,10 @@
                 dataType: 'json',
                 success: function(data) {
                     console.log(data);
+                    if(data.API.indexOf("/data")<0)
+                    {
+                        data.API = data.AP+"/data";
+                    }
                     host = data.API;
                     init();
                 },
