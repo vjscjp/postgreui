@@ -24,25 +24,42 @@
 </div>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-rc1/jquery.min.js"></script>
 <script>
+      var host;
 	$(document).ready(function() {
-    
+      
+    	$.ajax({
+                url: "host",
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    console.log(data);
+                    host = data.API;
+                    init();
+                },
+                error: function(request, error) {
+                  console.log("Endpoint not working");
+                }
+              });
+        
+    function init(){
         	$.ajax({
-    url: "http://localhost:8888/data",
-    type: 'GET',
-    dataType: 'json',
-    success: function(data) {
-		$("#counter").html(data.Data.Count);
-    },
-    error: function(request, error) {
-      console.log("Endpoint not working");
+                url: host,
+                type: 'GET',
+                dataType: 'json',
+                success: function(data) {
+                    $("#counter").html(data.Data.Count);
+                },
+                error: function(request, error) {
+                  console.log("Endpoint not working");
+                }
+              });
     }
-  });
         
 	$("#btnLike").click(function(){  
             var i = parseInt($("#counter").html());
             i = i+1;
            	$.ajax({
-            url: "http://localhost:8888/data",
+            url: host,
             type: 'POST',
             data:'{"Count": '+i+'}',
             dataType: 'json',
@@ -57,7 +74,7 @@
         
     	$("#btnReset").click(function(){  
            	$.ajax({
-            url: "http://localhost:8888/data",
+            url: host,
             type: 'POST',
             data:'{"Count": 0}',
             dataType: 'json',
